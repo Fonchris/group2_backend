@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/ef8a64f3-7fc7-4e60-a4f9-4085a5dee4cd)
+
 # 🌐 Translation Application (Study Project) - Dataset Creation Phase
 
 ## 📋 Project Description
