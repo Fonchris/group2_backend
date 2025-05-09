@@ -1799,6 +1799,7 @@ TEMPORARY_DICTIONARIES = {
         "enfoncer ça et là": "kàmtà",
         "jument": "jwîlẽŋ",
         "ajouter": "tsó'2",
+        "bonjour": "Olia",
         "travailleur": "bồ",
         "mentir": "tu'tà",
         "se rendre visite": "lényà",
