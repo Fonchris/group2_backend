@@ -42,10 +42,6 @@ def initialize_firebase():
         logger.error(f"Error initializing Firebase: {str(e)}")
         raise
 
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    return jsonify({'status': 'healthy', 'dictionary_languages': list(TEMPORARY_DICTIONARIES.keys())}), 200
-
 @app.route('/api/translate', methods=['POST'])
 def translate():
     try:
