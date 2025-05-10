@@ -51,6 +51,18 @@ def initialize_firebase():
         logger.error(f"Error initializing Firebase: {str(e)}")
         raise
 
+@app.route('/')
+def index():
+    return jsonify({
+        "status": "online",
+        "message": "Welcome to the Translation API",
+        "endpoints": {
+            "/api/translate": "POST - Translate text between languages",
+            # Add other endpoints here
+        },
+        "supported_language_pairs": list(TEMPORARY_DICTIONARIES.keys())
+    })
+
 @app.route('/api/translate', methods=['POST'])
 def translate():
     try:
@@ -270,5 +282,11 @@ if __name__ == "__main__":
     # Log loaded dictionaries
     logger.info(f"Loaded dictionaries for language pairs: {list(TEMPORARY_DICTIONARIES.keys())}")
     
-    # Start Flask app
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Start Flask app - use production settings on Render
+    is_production = os.environ.get('RENDER', False)
+    if is_production:
+        # Production settings
+        app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
+    else:
+        # Development settings
+        app.run(host='0.0.0.0', port=5000, debug=True)
