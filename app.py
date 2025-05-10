@@ -37,20 +37,11 @@ def initialize_firebase():
     try:
         if not firebase_admin._apps:
             # Check if running in production (Render)
-            if os.environ.get('FIREBASE_PRIVATE_KEY'):
-                # Use environment variables
-                cred = credentials.Certificate({
-                    "type": "service_account",
-                    "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
-                    "private_key_id": os.environ.get('FIREBASE_PRIVATE_KEY_ID'),
-                    "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
-                    "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
-                    "client_id": os.environ.get('FIREBASE_CLIENT_ID'),
-                    "auth_uri": os.environ.get('FIREBASE_AUTH_URI', "https://accounts.google.com/o/oauth2/auth"),
-                    "token_uri": os.environ.get('FIREBASE_TOKEN_URI', "https://oauth2.googleapis.com/token"),
-                    "auth_provider_x509_cert_url": os.environ.get('FIREBASE_AUTH_PROVIDER_X509_CERT_URL', "https://www.googleapis.com/oauth2/v1/certs"),
-                    "client_x509_cert_url": os.environ.get('FIREBASE_CLIENT_X509_CERT_URL')
-                })
+            if os.environ.get('FIREBASE_CREDENTIALS_JSON'):
+                # Use JSON string from environment variable
+                import json
+                cred_dict = json.loads(os.environ.get('FIREBASE_CREDENTIALS_JSON'))
+                cred = credentials.Certificate(cred_dict)
             else:
                 # Local development - use JSON file
                 cred = credentials.Certificate('translatingapp-7f27b-firebase-adminsdk-fbsvc-331e37860b.json')
