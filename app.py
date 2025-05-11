@@ -14,7 +14,8 @@ app = Flask(__name__)
 CORS(app, resources={
     r"/api/*": {
         "origins": ["http://127.0.0.1:5500", "http://127.0.0.1:5501", 
-                   "http://localhost:5500", "http://localhost:5501"],
+                   "http://localhost:5500", "http://localhost:5501",
+                   "https://no-name-for-now.vercel.app"],
         "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
@@ -23,9 +24,19 @@ CORS(app, resources={
 
 @app.after_request
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:5501'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    # Get the origin from the request
+    origin = request.headers.get('Origin')
+    allowed_origins = ["http://127.0.0.1:5501", "https://no-name-for-now.vercel.app"]
+    
+    # If the origin is in our allowed list, set it in the response
+    if origin in allowed_origins:
+        response.headers['Access-Control-Allow-Origin'] = origin
+    else:
+        response.headers['Access-Control-Allow-Origin'] = allowed_origins[0]
+        
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 # Setup logging
